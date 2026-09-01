@@ -1,0 +1,23 @@
+name: Bug report
+description: Something in the API or the tooling does not work.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the request you made and the response you got.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: How you are running it
+      placeholder: docker compose on macOS 15, commit abc1234

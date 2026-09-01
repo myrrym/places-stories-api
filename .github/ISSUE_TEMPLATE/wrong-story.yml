@@ -1,0 +1,37 @@
+name: Wrong or misattributed story
+description: A story is attached to the wrong place, or its attribution is incorrect.
+title: "Wrong story: "
+labels: ["bug", "data", "priority"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the highest-priority class of bug in this project. A wrong
+        story on a real landmark defeats the entire point of the API, and
+        these get pulled straight away rather than debated.
+  - type: input
+    id: place_id
+    attributes:
+      label: Place ID
+      description: The `id` field, which is also the filename and the URL segment.
+      placeholder: khoo-kongsi
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What is wrong
+      options:
+        - The story describes a different place
+        - The facts in the story are wrong
+        - The attribution (source, URL or licence) is wrong
+        - The coordinates point somewhere else
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Details
+      description: What it says, what it should say, and how you know.
+    validations:
+      required: true

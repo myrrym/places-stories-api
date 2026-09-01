@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to add a place yourself
+    url: https://github.com/myrrym/places-stories-api/blob/main/CONTRIBUTING.md
+    about: One YAML file, validated by CI. Usually faster than opening an issue.
+  - name: Data licensing and attribution
+    url: https://github.com/myrrym/places-stories-api/blob/main/DATA_LICENSE.md
+    about: What the OpenStreetMap and Wikipedia licences require of you.

@@ -1,0 +1,49 @@
+name: Add a place
+description: Suggest a Malaysian landmark that should be in the dataset.
+title: "Add: "
+labels: ["place", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can also skip this form and open a pull request directly against
+        `data/places/` — see [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+        An issue is useful when you know the place but would rather someone
+        else write it up.
+  - type: input
+    id: name
+    attributes:
+      label: Name of the place
+      placeholder: Masjid Kampung Hulu
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Town and state
+      placeholder: Melaka, Melaka
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options: [historic, religious, museum, natural, market, landmark]
+    validations:
+      required: true
+  - type: input
+    id: wikipedia
+    attributes:
+      label: English Wikipedia article, if one exists
+      description: The exact article title. Leave blank if there is none.
+      placeholder: Kampung Hulu Mosque
+  - type: textarea
+    id: story
+    attributes:
+      label: Why does this place matter?
+      description: >
+        A sentence or two is plenty. If you know an open-licensed source for
+        its history, name it — we cannot use text from travel blogs or
+        guidebooks.
+    validations:
+      required: true
