@@ -1,0 +1,57 @@
+name: places-stories-api
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-places}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-places}
+      POSTGRES_DB: ${POSTGRES_DB:-places}
+    # Non-default host ports so this stack never collides with another
+    # Postgres or Redis already running on the machine.
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-places} -d ${POSTGRES_DB:-places}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  cache:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      - "56379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://places:places@db:5432/places}
+      REDIS_URL: ${REDIS_URL:-redis://cache:6379/0}
+    # Override with API_PORT if 8000 is taken on your machine.
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    # Migrate, then load whatever is in data/places, then serve.
+    command: >
+      sh -c "alembic upgrade head &&
+             python -m ingestion.load &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  pgdata:

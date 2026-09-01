@@ -1,0 +1,96 @@
+# Curated seed list for v1.
+#
+# Deliberately only *names*, not coordinates. `python -m ingestion.build_seed`
+# resolves each entry to a Wikidata item and coordinates, pulls the OSM element
+# behind it, fetches the Wikipedia lead section as the story, and writes the
+# stitched result to data/places/<id>.yaml. Nothing here is hand-measured.
+#
+# Coverage is spread across 14 states/territories, but clustered 3-6 places per
+# town so that a 1 km proximity query returns real neighbours rather than a
+# single lonely pin.
+
+places:
+  # --- Penang: George Town ---
+  - { id: khoo-kongsi,             name: Khoo Kongsi,                     wikipedia_title: Khoo Kongsi,                            category: historic,  city: George Town,     state: Penang }
+  - { id: fort-cornwallis,         name: Fort Cornwallis,                 wikipedia_title: Fort Cornwallis,                        category: historic,  city: George Town,     state: Penang }
+  - { id: cheong-fatt-tze-mansion, name: Cheong Fatt Tze Mansion,         wikipedia_title: Cheong Fatt Tze Mansion,                category: historic,  city: George Town,     state: Penang }
+  - { id: pinang-peranakan-mansion, name: Pinang Peranakan Mansion,       wikipedia_title: Pinang Peranakan Mansion,               category: museum,    city: George Town,     state: Penang }
+  - { id: kek-lok-si,              name: Kek Lok Si,                      wikipedia_title: Kek Lok Si,                             category: religious, city: Air Itam,        state: Penang }
+  - { id: penang-hill,             name: Penang Hill,                     wikipedia_title: Penang Hill,                            category: natural,   city: Air Itam,        state: Penang }
+
+  # --- Kuala Lumpur ---
+  - { id: petronas-towers,         name: Petronas Towers,                 wikipedia_title: Petronas Towers,                        category: landmark,  city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: sultan-abdul-samad-building, name: Sultan Abdul Samad Building, wikipedia_title: Sultan Abdul Samad Building,            category: historic,  city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: merdeka-square,          name: Merdeka Square,                  wikipedia_title: "Merdeka Square, Kuala Lumpur",         category: historic,  city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: jamek-mosque,            name: Jamek Mosque,                    wikipedia_title: Jamek Mosque,                           category: religious, city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: central-market-kl,       name: Central Market,                  wikipedia_title: "Central Market, Kuala Lumpur",         category: market,    city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: national-museum-malaysia, name: National Museum,                wikipedia_title: "National Museum (Malaysia)",           category: museum,    city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: kl-tower,                name: Kuala Lumpur Tower,              wikipedia_title: Kuala Lumpur Tower,                     category: landmark,  city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: thean-hou-temple,        name: Thean Hou Temple,                wikipedia_title: Thean Hou Temple,                       category: religious, city: Kuala Lumpur,    state: Kuala Lumpur }
+  - { id: batu-caves,              name: Batu Caves,                      wikipedia_title: Batu Caves,                             category: religious, city: Gombak,          state: Selangor }
+
+  # --- Putrajaya ---
+  - { id: putra-mosque,            name: Putra Mosque,                    wikipedia_title: Putra Mosque,                           category: religious, city: Putrajaya,       state: Putrajaya }
+  - { id: perdana-putra,           name: Perdana Putra,                   wikipedia_title: Perdana Putra,                          category: landmark,  city: Putrajaya,       state: Putrajaya }
+
+  # --- Melaka ---
+  - { id: a-famosa,                name: A Famosa,                        wikipedia_title: A Famosa,                               category: historic,  city: Melaka,          state: Melaka }
+  - { id: stadthuys,               name: Stadthuys,                       wikipedia_title: Stadthuys,                              category: historic,  city: Melaka,          state: Melaka }
+  - { id: christ-church-melaka,    name: Christ Church,                   wikipedia_title: "Christ Church, Malacca",               category: religious, city: Melaka,          state: Melaka }
+  - { id: cheng-hoon-teng,         name: Cheng Hoon Teng,                 wikipedia_title: Cheng Hoon Teng,                        category: religious, city: Melaka,          state: Melaka }
+  - { id: kampung-kling-mosque,    name: Kampung Kling Mosque,            wikipedia_title: Kampung Kling Mosque,                   category: religious, city: Melaka,          state: Melaka }
+  - { id: jonker-walk,             name: Jonker Walk,                     wikipedia_title: Jonker Walk,                            category: market,    city: Melaka,          state: Melaka }
+  - { id: malacca-sultanate-palace, name: Malacca Sultanate Palace,       wikipedia_title: Malacca Sultanate Palace Museum,        category: museum,    city: Melaka,          state: Melaka }
+
+  # --- Perak: Ipoh and Taiping ---
+  - { id: ipoh-railway-station,    name: Ipoh Railway Station,            wikipedia_title: Ipoh railway station,                   category: historic,  city: Ipoh,            state: Perak }
+  - { id: sam-poh-tong,            name: Sam Poh Tong,                    wikipedia_title: Sam Poh Tong,                           category: religious, city: Ipoh,            state: Perak }
+  - { id: kellies-castle,          name: Kellie's Castle,                 wikipedia_title: Kellie's Castle,                        category: historic,  city: Batu Gajah,      state: Perak }
+  - { id: perak-museum,            name: Perak Museum,                    wikipedia_title: Perak Museum,                           category: museum,    city: Taiping,         state: Perak }
+  - { id: taiping-lake-gardens,    name: Taiping Lake Gardens,            wikipedia_title: Taiping Lake Gardens,                   category: natural,   city: Taiping,         state: Perak }
+
+  # --- Kedah and Langkawi ---
+  - { id: zahir-mosque,            name: Zahir Mosque,                    wikipedia_title: Zahir Mosque,                           category: religious, city: Alor Setar,      state: Kedah }
+  - { id: bujang-valley,           name: Bujang Valley,                   wikipedia_title: Bujang Valley,                          category: historic,  city: Merbok,          state: Kedah }
+  - { id: langkawi-sky-bridge,     name: Langkawi Sky Bridge,             wikipedia_title: Langkawi Sky Bridge,                    category: landmark,  city: Langkawi,        state: Kedah }
+  - { id: langkawi-cable-car,      name: Langkawi Cable Car,              wikipedia_title: Langkawi Cable Car,                     category: landmark,  city: Langkawi,        state: Kedah }
+
+  # --- Perlis ---
+  - { id: wang-kelian,             name: Wang Kelian,                     wikipedia_title: Wang Kelian,                            category: market,    city: Wang Kelian,     state: Perlis }
+
+  # --- Kelantan: Kota Bharu ---
+  - { id: istana-jahar,            name: Istana Jahar,                    wikipedia_title: Istana Jahar,                           category: museum,    city: Kota Bharu,      state: Kelantan }
+  - { id: siti-khadijah-market,    name: Siti Khadijah Market,            wikipedia_title: Siti Khadijah Market,                   category: market,    city: Kota Bharu,      state: Kelantan }
+
+  # --- Terengganu ---
+  - { id: crystal-mosque,          name: Crystal Mosque,                  wikipedia_title: Crystal Mosque,                         category: religious, city: Kuala Terengganu, state: Terengganu }
+  - { id: redang-island,           name: Redang Island,                   wikipedia_title: Redang Island,                          category: natural,   city: Redang,          state: Terengganu }
+
+  # --- Pahang ---
+  - { id: taman-negara,            name: Taman Negara,                    wikipedia_title: Taman Negara,                           category: natural,   city: Jerantut,        state: Pahang }
+  - { id: cameron-highlands,       name: Cameron Highlands,               wikipedia_title: Cameron Highlands,                      category: natural,   city: Tanah Rata,      state: Pahang }
+
+  # --- Negeri Sembilan ---
+  - { id: seri-menanti,            name: Seri Menanti,                    wikipedia_title: Seri Menanti,                           category: historic,  city: Kuala Pilah,     state: Negeri Sembilan }
+  - { id: port-dickson,            name: Port Dickson,                    wikipedia_title: Port Dickson,                           category: natural,   city: Port Dickson,    state: Negeri Sembilan }
+
+  # --- Johor: Johor Bahru ---
+  - { id: sultan-abu-bakar-state-mosque, name: Sultan Abu Bakar State Mosque, wikipedia_title: Sultan Abu Bakar State Mosque,      category: religious, city: Johor Bahru,     state: Johor }
+  - { id: istana-besar,            name: Istana Besar,                    wikipedia_title: Istana Besar,                           category: historic,  city: Johor Bahru,     state: Johor }
+  - { id: sultan-ibrahim-building, name: Sultan Ibrahim Building,         wikipedia_title: Sultan Ibrahim Building,                category: landmark,  city: Johor Bahru,     state: Johor }
+  - { id: johor-bahru-old-chinese-temple, name: Johor Bahru Old Chinese Temple, wikipedia_title: Johor Bahru Old Chinese Temple,   category: religious, city: Johor Bahru,     state: Johor }
+
+  # --- Sarawak: Kuching ---
+  - { id: sarawak-museum,          name: Sarawak Museum,                  wikipedia_title: Sarawak Museum,                         category: museum,    city: Kuching,         state: Sarawak }
+  - { id: fort-margherita,         name: Fort Margherita,                 wikipedia_title: Fort Margherita,                        category: historic,  city: Kuching,         state: Sarawak }
+  - { id: the-astana,              name: The Astana,                      wikipedia_title: The Astana,                             category: historic,  city: Kuching,         state: Sarawak }
+  - { id: tua-pek-kong-kuching,    name: Tua Pek Kong Temple,             wikipedia_title: "Tua Pek Kong Temple, Kuching",         category: religious, city: Kuching,         state: Sarawak }
+  - { id: bako-national-park,      name: Bako National Park,              wikipedia_title: Bako National Park,                     category: natural,   city: Kuching,         state: Sarawak }
+
+  # --- Sabah: Kota Kinabalu ---
+  - { id: atkinson-clock-tower,    name: Atkinson Clock Tower,            wikipedia_title: Atkinson Clock Tower,                   category: historic,  city: Kota Kinabalu,   state: Sabah }
+  - { id: sabah-state-mosque,      name: Sabah State Mosque,              wikipedia_title: Sabah State Mosque,                     category: religious, city: Kota Kinabalu,   state: Sabah }
+  - { id: sabah-state-museum,      name: Sabah State Museum,              wikipedia_title: Sabah State Museum,                     category: museum,    city: Kota Kinabalu,   state: Sabah }
+  - { id: mount-kinabalu,          name: Mount Kinabalu,                  wikipedia_title: Mount Kinabalu,                         category: natural,   city: Ranau,           state: Sabah }
+  - { id: kinabalu-park,           name: Kinabalu Park,                   wikipedia_title: Kinabalu Park,                          category: natural,   city: Ranau,           state: Sabah }
+  - { id: sipadan,                 name: Sipadan,                         wikipedia_title: Sipadan,                                category: natural,   city: Semporna,        state: Sabah }
