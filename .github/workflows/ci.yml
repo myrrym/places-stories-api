@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install ruff
+      - run: ruff check .
+      - run: ruff format --check .
+
+  data:
+    name: Validate place data
+    runs-on: ubuntu-latest
+    # The contribution gate. No database, no network -- a contributor adding a
+    # place gets an answer in seconds.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - run: pip install pyyaml jsonschema pytest
+      - run: pytest tests/test_data_files.py -q
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: places
+          POSTGRES_PASSWORD: places
+          POSTGRES_DB: places
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U places"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+      cache:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+
+    env:
+      TEST_DATABASE_URL: postgresql+asyncpg://places:places@localhost:5432/places_test
+      TEST_REDIS_URL: redis://localhost:6379/1
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Create the test database
+        env:
+          PGPASSWORD: places
+        run: |
+          psql -h localhost -U places -d places -c 'CREATE DATABASE places_test OWNER places;'
+          psql -h localhost -U places -d places_test -c 'CREATE EXTENSION IF NOT EXISTS postgis;'
+
+      - run: pip install -e ".[dev]"
+
+      - name: Check migrations match the models
+        env:
+          DATABASE_URL: postgresql+asyncpg://places:places@localhost:5432/places
+        run: |
+          alembic upgrade head
+          # An empty autogenerate diff proves the migration and the ORM agree.
+          alembic check
+
+      - run: pytest -q
+
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    needs: [lint, data, test]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: places-stories-api:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Smoke test the image
+        run: |
+          docker run --rm --entrypoint python places-stories-api:${{ github.sha }} \
+            -c "import app.main; print('app imports cleanly')"
