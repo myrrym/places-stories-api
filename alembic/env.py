@@ -20,10 +20,17 @@ config.set_main_option("sqlalchemy.url", get_settings().database_url)
 target_metadata = Base.metadata
 
 
+# PostGIS and its optional extensions (topology, tiger geocoder) create their
+# own tables, and the tiger extension puts its schema on the database search
+# path -- so reflection sees them. Alembic manages only the tables this
+# application declares; everything else reflected is left alone.
 def include_object(obj, name, type_, reflected, compare_to):
-    # PostGIS ships its own tables/indexes; never let autogenerate touch them.
-    if type_ == "table" and name in {"spatial_ref_sys"}:
+    if type_ == "table" and reflected and name not in target_metadata.tables:
         return False
+    if type_ == "index" and reflected:
+        table = getattr(obj, "table", None)
+        if table is not None and table.name not in target_metadata.tables:
+            return False
     return True
 
 

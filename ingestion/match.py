@@ -26,8 +26,11 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from difflib import SequenceMatcher
+from typing import TYPE_CHECKING
 
-from ingestion.sources.wikipedia import Article, WikipediaClient
+if TYPE_CHECKING:  # Keeps this module importable without httpx installed,
+    # so the lightweight data-validation gate has nothing extra to install.
+    from ingestion.sources.wikipedia import Article, WikipediaClient
 
 logger = logging.getLogger(__name__)
 

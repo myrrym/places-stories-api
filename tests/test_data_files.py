@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from ingestion.load import DATA_DIR, ValidationFailure, read_records
+from ingestion.validate import DATA_DIR, ValidationFailure, read_records
 
 
 @pytest.fixture(scope="module")

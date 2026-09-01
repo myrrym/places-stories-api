@@ -22,12 +22,9 @@ os.environ["REDIS_URL"] = os.environ.get("TEST_REDIS_URL", "redis://localhost:56
 os.environ["RATE_LIMIT_PER_MINUTE"] = "1000"
 os.environ["RATE_LIMIT_PER_DAY"] = "100000"
 
-from redis.asyncio import from_url  # noqa: E402
-from sqlalchemy import text  # noqa: E402
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine  # noqa: E402
-
-from app.config import get_settings  # noqa: E402
-from app.db.models import Base, Category, Place, Story  # noqa: E402
+# Everything below imports lazily, inside the fixtures. The data-file
+# validation tests are the contribution gate and must run with nothing
+# installed beyond PyYAML, jsonschema and pytest.
 
 METRES_PER_DEGREE_LAT = 111_195.0
 
@@ -36,10 +33,10 @@ METRES_PER_DEGREE_LAT = 111_195.0
 ORIGIN_LAT, ORIGIN_LON = 5.4141, 100.3288
 
 FIXTURE_PLACES = [
-    ("alpha", 0.0, Category.historic),
-    ("bravo", 400.0, Category.religious),
-    ("charlie", 900.0, Category.museum),
-    ("delta", 3000.0, Category.market),
+    ("alpha", 0.0, "historic"),
+    ("bravo", 400.0, "religious"),
+    ("charlie", 900.0, "museum"),
+    ("delta", 3000.0, "market"),
 ]
 
 
@@ -48,6 +45,12 @@ def _offset_north(metres: float) -> tuple[float, float]:
 
 
 async def _reset_schema() -> None:
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import create_async_engine
+
+    from app.config import get_settings
+    from app.db.models import Base
+
     engine = create_async_engine(get_settings().database_url)
     async with engine.begin() as conn:
         await conn.execute(text("CREATE EXTENSION IF NOT EXISTS postgis"))
@@ -57,6 +60,11 @@ async def _reset_schema() -> None:
 
 
 async def _seed() -> None:
+    from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
+    from app.config import get_settings
+    from app.db.models import Category, Place, Story
+
     engine = create_async_engine(get_settings().database_url)
     factory = async_sessionmaker(engine, expire_on_commit=False)
     async with factory() as session:
@@ -66,7 +74,7 @@ async def _seed() -> None:
                 Place(
                     id=place_id,
                     name=place_id.title(),
-                    category=category,
+                    category=Category(category),
                     geom=f"SRID=4326;POINT({lon} {lat})",
                     city="George Town",
                     state="Penang",
@@ -114,6 +122,10 @@ def database() -> None:
 
 @pytest.fixture
 async def session(database):
+    from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
+    from app.config import get_settings
+
     engine = create_async_engine(get_settings().database_url)
     factory = async_sessionmaker(engine, expire_on_commit=False)
     async with factory() as db_session:
@@ -123,6 +135,10 @@ async def session(database):
 
 @pytest.fixture
 async def cache():
+    from redis.asyncio import from_url
+
+    from app.config import get_settings
+
     client = from_url(get_settings().redis_url, decode_responses=True)
     await client.flushdb()
     yield client
@@ -131,6 +147,8 @@ async def cache():
 
 @pytest.fixture
 def settings():
+    from app.config import get_settings
+
     return get_settings()
 
 
