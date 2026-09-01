@@ -350,6 +350,13 @@ per place, validated in CI against `data/schema/place.schema.json`. No account,
 no submission endpoint, no moderation queue — GitHub review *is* the moderation.
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Good places to start: **57 places have no street address**, **16 have no
+local-language name**, and there are Malaysian landmarks with no English
+Wikipedia article at all, which need a story written by hand from an
+open-licensed source. Those are filed as issues.
+
+Also: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SECURITY.md](SECURITY.md).
+
 ---
 
 ## Tests
