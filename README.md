@@ -1,5 +1,9 @@
 # Places & Stories API
 
+[![CI](https://github.com/myrrym/places-stories-api/actions/workflows/ci.yml/badge.svg)](https://github.com/myrrym/places-stories-api/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/code-Apache--2.0-blue.svg)](LICENSE)
+[![Data](https://img.shields.io/badge/data-ODbL%20%2B%20CC%20BY--SA-orange.svg)](DATA_LICENSE.md)
+
 An open geospatial API for Malaysian landmarks **and the stories behind them**.
 
 Ask *"what's near me?"* and get places back with their histories — not just a
